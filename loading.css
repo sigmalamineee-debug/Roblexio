@@ -78,3 +78,17 @@
         opacity: 0.5;
     }
 }
+.loader-wrapper,
+.loader-content,
+.loading-logo,
+.loading-text,
+.loading-progress-bar {
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+.loading-logo {
+    image-rendering: crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+}

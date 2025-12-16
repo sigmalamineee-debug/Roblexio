@@ -50,6 +50,9 @@ class Particle {
         this.speedX = Math.random() * 1 - 0.5;
         this.speedY = Math.random() * 1 - 0.5;
         this.opacity = Math.random() * 0.5 + 0.2;
+        // Color variations: blue, cyan, purple
+        const colors = ['59, 130, 246', '6, 182, 212', '139, 92, 246'];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
     }
 
     update() {
@@ -65,7 +68,7 @@ class Particle {
     }
 
     draw() {
-        ctx.fillStyle = `rgba(59, 130, 246, ${this.opacity})`;
+        ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -73,7 +76,7 @@ class Particle {
 }
 
 const particles = [];
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 150; i++) {
     particles.push(new Particle());
 }
 
@@ -202,7 +205,7 @@ window.addEventListener('scroll', () => {
         if (el.classList.contains('parallax-medium')) speed = 0.5;
         if (el.classList.contains('parallax-fast')) speed = 0.7;
 
-        el.style.transform = ranslateY(px);
+        el.style.transform = `translateY(${scrolled * speed}px)`;
     });
 });
 
@@ -259,5 +262,435 @@ navTabs.forEach(tab => {
             mobileOverlay.classList.remove('active');
             document.body.style.overflow = '';
         }
+    });
+});
+
+
+
+// Theme Toggle
+const themeToggle = document.getElementById('themeToggle');
+const moonIcon = document.querySelector('.moon-icon');
+const sunIcon = document.querySelector('.sun-icon');
+const savedTheme = localStorage.getItem('theme') || 'dark';
+
+// Apply saved theme
+if (savedTheme === 'light') {
+    document.body.classList.add('light-theme');
+}
+
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('light-theme');
+    const isLight = document.body.classList.contains('light-theme');
+
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+});
+
+// Live Stats Counter
+function animateCounter(element, target, duration = 2000) {
+    const start = 0;
+    const increment = target / (duration / 16);
+    let current = start;
+
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            current = target;
+            clearInterval(timer);
+        }
+        element.textContent = Math.floor(current).toLocaleString();
+    }, 16);
+}
+
+// Stats Observer
+const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const statCards = entry.target.querySelectorAll('.stat-card');
+            statCards.forEach((card, index) => {
+                const numberEl = card.querySelector('.stat-number');
+                // Only animate if it says "Coming Soon" (for future use)
+                // For now, keep "Coming Soon" as is
+                // Uncomment below to enable counter:
+                // if (numberEl.textContent === 'Coming Soon') {
+                //     const targets = [15420, 48392, 2847];
+                //     setTimeout(() => {
+                //         animateCounter(numberEl, targets[index]);
+                //     }, index * 200);
+                // }
+            });
+            statsObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.5 });
+
+const statsSection = document.querySelector('.stats-section');
+if (statsSection) {
+    statsObserver.observe(statsSection);
+}
+
+// Discord Activity - Live Stats
+async function fetchDiscordStats() {
+    try {
+        // Extract server ID from invite link
+        const inviteCode = 'hKURBTwV7J';
+
+        // Fetch from Discord widget API
+        const response = await fetch('https://discord.com/api/guilds/1322664892959621120/widget.json');
+
+        if (!response.ok) {
+            throw new Error('Widget not enabled');
+        }
+
+        const data = await response.json();
+        const onlineCount = data.presence_count || 0;
+
+        // Update display
+        const onlineEl = document.getElementById('onlineCount');
+        if (onlineEl) {
+            onlineEl.textContent = onlineCount.toLocaleString();
+        }
+
+    } catch (error) {
+        console.log('Discord stats unavailable:', error.message);
+        // Keep showing "--" if API fails
+    }
+}
+
+// Fetch stats on load
+fetchDiscordStats();
+
+// Refresh every 5 minutes
+setInterval(fetchDiscordStats, 5 * 60 * 1000);
+
+// Interactive Background Effects
+
+// Mouse Spotlight Effect
+const mouseSpotlight = document.getElementById('mouseSpotlight');
+
+document.addEventListener('mousemove', (e) => {
+    if (mouseSpotlight) {
+        mouseSpotlight.style.left = e.clientX + 'px';
+        mouseSpotlight.style.top = e.clientY + 'px';
+    }
+});
+
+// Constellation Lines Effect
+const constellationCanvas = document.getElementById('constellation-canvas');
+if (constellationCanvas) {
+    const ctx = constellationCanvas.getContext('2d');
+    constellationCanvas.width = window.innerWidth;
+    constellationCanvas.height = window.innerHeight;
+
+    function drawConstellationLines() {
+        ctx.clearRect(0, 0, constellationCanvas.width, constellationCanvas.height);
+
+        // Draw lines between nearby particles
+        if (particles && particles.length > 0) {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 150) {
+                        ctx.strokeStyle = `rgba(59, 130, 246, ${0.2 * (1 - distance / 150)})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        requestAnimationFrame(drawConstellationLines);
+    }
+
+    drawConstellationLines();
+
+    // Resize handler
+    window.addEventListener('resize', () => {
+        constellationCanvas.width = window.innerWidth;
+        constellationCanvas.height = window.innerHeight;
+    });
+}
+
+// Advanced Scroll Animations
+
+// Scroll Progress Bar
+window.addEventListener('scroll', () => {
+    const scrollProgress = document.querySelector('.scroll-progress');
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrolled = (window.scrollY / scrollHeight) * 100;
+    if (scrollProgress) {
+        scrollProgress.style.width = scrolled + '%';
+    }
+});
+
+// Scroll Depth Indicator
+const sections = ['home', 'features', 'faq', 'credits', 'download'];
+const depthDots = document.querySelectorAll('.depth-dot');
+
+depthDots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+        const section = document.getElementById(sections[index]);
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+});
+
+// Update active dot on scroll
+window.addEventListener('scroll', () => {
+    let currentSection = 0;
+    sections.forEach((sectionId, index) => {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            const rect = section.getBoundingClientRect();
+            if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+                currentSection = index;
+            }
+        }
+    });
+
+    depthDots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSection);
+    });
+});
+
+// Parallax Effect
+window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+
+    // Apply parallax to background elements
+    document.querySelectorAll('.parallax-slow').forEach(el => {
+        el.style.transform = ranslateY(px);
+    });
+
+    document.querySelectorAll('.parallax-medium').forEach(el => {
+        el.style.transform = ranslateY(px);
+    });
+
+    document.querySelectorAll('.parallax-fast').forEach(el => {
+        el.style.transform = ranslateY(px);
+    });
+});
+
+// Staggered Fade In on Scroll
+const observerOptions = {
+    threshold: 0.2,
+    rootMargin: '0px 0px -100px 0px'
+};
+
+const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, observerOptions);
+
+// Apply to FAQ items
+document.querySelectorAll('.faq-item').forEach(item => {
+    item.classList.add('stagger-fade');
+    fadeObserver.observe(item);
+});
+
+// Enhanced Feature Cards
+
+// Card Flip Functionality
+document.querySelectorAll('.flip-button').forEach(button => {
+    button.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const card = button.closest('.feature-card');
+        card.classList.toggle('flipped');
+    });
+});
+
+// Mouse-Following Glow Effect
+document.querySelectorAll('.feature-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        card.style.setProperty('--mouse-x', x + 'px');
+        card.style.setProperty('--mouse-y', y + 'px');
+
+        // Position the glow effect
+        const glow = card.querySelector('::before') || card;
+        if (card.style) {
+            card.style.setProperty('--glow-x', (x - 100) + 'px');
+            card.style.setProperty('--glow-y', (y - 100) + 'px');
+        }
+    });
+});
+
+// Update CSS custom properties for glow
+const style = document.createElement('style');
+style.textContent = `
+    .feature-card::before {
+        left: var(--glow-x, -100px);
+        top: var(--glow-y, -100px);
+    }
+`;
+document.head.appendChild(style);
+
+// Sound System
+class SoundSystem {
+    constructor() {
+        this.musicEnabled = false;
+        this.sfxEnabled = true;
+        this.musicVolume = 0.3;
+        this.sfxVolume = 0.5;
+        
+        // Create audio context for sound generation
+        this.audioContext = null;
+        
+        // Load saved preferences
+        const savedMusic = localStorage.getItem('musicEnabled');
+        const savedSfx = localStorage.getItem('sfxEnabled');
+        if (savedMusic !== null) this.musicEnabled = savedMusic === 'true';
+        if (savedSfx !== null) this.sfxEnabled = savedSfx === 'true';
+    }
+    
+    initAudioContext() {
+        if (!this.audioContext) {
+            this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+    }
+    
+    playHoverSound() {
+        if (!this.sfxEnabled) return;
+        this.initAudioContext();
+        
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        
+        oscillator.frequency.value = 800;
+        oscillator.type = 'sine';
+        
+        gainNode.gain.setValueAtTime(this.sfxVolume * 0.1, this.audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.1);
+        
+        oscillator.start(this.audioContext.currentTime);
+        oscillator.stop(this.audioContext.currentTime + 0.1);
+    }
+    
+    playClickSound() {
+        if (!this.sfxEnabled) return;
+        this.initAudioContext();
+        
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        
+        oscillator.frequency.value = 1200;
+        oscillator.type = 'square';
+        
+        gainNode.gain.setValueAtTime(this.sfxVolume * 0.15, this.audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.05);
+        
+        oscillator.start(this.audioContext.currentTime);
+        oscillator.stop(this.audioContext.currentTime + 0.05);
+    }
+    
+    playSuccessSound() {
+        if (!this.sfxEnabled) return;
+        this.initAudioContext();
+        
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(523, this.audioContext.currentTime);
+        oscillator.frequency.setValueAtTime(659, this.audioContext.currentTime + 0.1);
+        oscillator.frequency.setValueAtTime(784, this.audioContext.currentTime + 0.2);
+        oscillator.type = 'sine';
+        
+        gainNode.gain.setValueAtTime(this.sfxVolume * 0.2, this.audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.3);
+        
+        oscillator.start(this.audioContext.currentTime);
+        oscillator.stop(this.audioContext.currentTime + 0.3);
+    }
+    
+    toggleMusic() {
+        this.musicEnabled = !this.musicEnabled;
+        localStorage.setItem('musicEnabled', this.musicEnabled);
+        return this.musicEnabled;
+    }
+    
+    toggleSfx() {
+        this.sfxEnabled = !this.sfxEnabled;
+        localStorage.setItem('sfxEnabled', this.sfxEnabled);
+        return this.sfxEnabled;
+    }
+    
+    setMusicVolume(volume) {
+        this.musicVolume = volume / 100;
+    }
+    
+    setSfxVolume(volume) {
+        this.sfxVolume = volume / 100;
+    }
+}
+
+const soundSystem = new SoundSystem();
+
+// Sound Toggle Button
+const soundToggle = document.getElementById('soundToggle');
+const volumeControl = document.getElementById('volumeControl');
+const musicVolumeSlider = document.getElementById('musicVolume');
+const sfxVolumeSlider = document.getElementById('sfxVolume');
+
+if (soundToggle) {
+    soundToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        volumeControl.classList.toggle('active');
+        soundSystem.playClickSound();
+    });
+}
+
+// Close volume control when clicking outside
+document.addEventListener('click', (e) => {
+    if (volumeControl && !volumeControl.contains(e.target) && e.target !== soundToggle) {
+        volumeControl.classList.remove('active');
+    }
+});
+
+// Volume sliders
+if (musicVolumeSlider) {
+    musicVolumeSlider.addEventListener('input', (e) => {
+        soundSystem.setMusicVolume(e.target.value);
+    });
+}
+
+if (sfxVolumeSlider) {
+    sfxVolumeSlider.addEventListener('input', (e) => {
+        soundSystem.setSfxVolume(e.target.value);
+        soundSystem.playHoverSound();
+    });
+}
+
+// Add hover sounds to interactive elements
+document.querySelectorAll('.btn, .nav-tab, .flip-button, .feature-card').forEach(element => {
+    element.addEventListener('mouseenter', () => {
+        soundSystem.playHoverSound();
+    });
+});
+
+// Add click sounds to buttons
+document.querySelectorAll('.btn, button, a').forEach(element => {
+    element.addEventListener('click', () => {
+        soundSystem.playClickSound();
     });
 });

@@ -330,7 +330,7 @@ async function fetchDiscordStats() {
         const inviteCode = 'hKURBTwV7J';
 
         
-        const response = await fetch('https:
+        const response = await fetch('https://discord.com/api/guilds/1322664892959621120/widget.json');
 
         if (!response.ok) {
             throw new Error('Widget not enabled');

@@ -1,6 +1,5 @@
-/* Interactive Background Effects */
 
-/* Mouse Spotlight Effect */
+
 .mouse-spotlight {
     position: fixed;
     width: 600px;
@@ -18,7 +17,6 @@ body:hover .mouse-spotlight {
     opacity: 1;
 }
 
-/* Floating Geometric Shapes */
 .geometric-shapes {
     position: fixed;
     top: 0;
@@ -122,7 +120,6 @@ body:hover .mouse-spotlight {
     }
 }
 
-/* Constellation Lines Canvas */
 #constellation-canvas {
     position: fixed;
     top: 0;
@@ -133,7 +130,6 @@ body:hover .mouse-spotlight {
     z-index: 0;
 }
 
-/* Light theme adjustments */
 body.light-theme .mouse-spotlight {
     background: radial-gradient(circle, rgba(96, 165, 250, 0.2) 0%, transparent 70%);
 }
@@ -142,7 +138,6 @@ body.light-theme .shape {
     opacity: 0.15;
 }
 
-/* Mobile optimizations */
 @media (max-width: 768px) {
     .mouse-spotlight {
         display: none;

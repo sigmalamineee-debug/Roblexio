@@ -739,7 +739,6 @@ footer {
     font-weight: 300;
 }
 
-
 .credit-icon-img {
     width: 120px;
     height: 120px;
@@ -1769,7 +1768,6 @@ body.page-loaded .background-effects {
 }
 
 
-/* Enhanced Footer Styles */
 .footer {
     background: linear-gradient(180deg, rgba(5, 10, 26, 0.95) 0%, rgba(10, 20, 40, 0.98) 100%);
     backdrop-filter: blur(20px);
@@ -1849,7 +1847,6 @@ body.page-loaded .background-effects {
     }
 }
 
-/* Theme Toggle Button */
 .theme-toggle {
     background: rgba(59, 130, 246, 0.1);
     border: 1px solid rgba(59, 130, 246, 0.3);
@@ -1875,7 +1872,6 @@ body.page-loaded .background-effects {
     transition: transform 0.3s ease;
 }
 
-/* Light Theme Variables */
 body.light-theme {
     --bg-primary: #f0f4f8;
     --bg-secondary: #ffffff;
@@ -1938,7 +1934,6 @@ body.light-theme .footer-section p {
     }
 }
 
-/* Theme Toggle SVG Icons */
 .theme-toggle {
     position: relative;
 }
@@ -1959,7 +1954,7 @@ body.light-theme .moon-icon {
 body.light-theme .sun-icon {
     display: block !important;
 }
-/* Discord Member Count */
+
 .discord-members {
     display: flex;
     align-items: center;
@@ -2008,9 +2003,9 @@ body.light-theme .member-label {
     }
 }
 
-/* Advanced Scroll Animations */
 
-/* Scroll Progress Bar */
+
+
 .scroll-progress {
     position: fixed;
     top: 0;
@@ -2023,7 +2018,7 @@ body.light-theme .member-label {
     box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
 }
 
-/* Scroll Depth Indicator */
+
 .scroll-depth {
     position: fixed;
     right: 2rem;
@@ -2078,13 +2073,13 @@ body.light-theme .member-label {
     opacity: 1;
 }
 
-/* Enhanced Parallax */
+
 .parallax-bg {
     transform: translateY(var(--parallax-offset, 0));
     transition: transform 0.1s ease-out;
 }
 
-/* Stats Counter Animation */
+
 .stat-number.counting {
     animation: pulse-glow 0.5s ease;
 }
@@ -2098,7 +2093,7 @@ body.light-theme .member-label {
     }
 }
 
-/* Staggered Fade In */
+
 .stagger-fade {
     opacity: 0;
     transform: translateY(30px);
@@ -2116,7 +2111,7 @@ body.light-theme .member-label {
 .stagger-fade:nth-child(4) { transition-delay: 0.4s; }
 .stagger-fade:nth-child(5) { transition-delay: 0.5s; }
 
-/* Mobile */
+
 @media (max-width: 768px) {
     .scroll-depth {
         display: none;
@@ -2127,9 +2122,9 @@ body.light-theme .member-label {
     }
 }
 
-/* Enhanced Feature Cards */
 
-/* Icon Animations */
+
+
 .feature-card .icon {
     font-size: 3rem;
     transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -2169,7 +2164,7 @@ body.light-theme .member-label {
     75% { transform: scale(1.2) rotate(10deg); }
 }
 
-/* Card Flip Effect */
+
 .feature-card {
     position: relative;
     transform-style: preserve-3d;
@@ -2231,7 +2226,7 @@ body.light-theme .member-label {
     font-weight: bold;
 }
 
-/* Mouse-Following Glow */
+
 .feature-card {
     overflow: hidden;
 }
@@ -2258,7 +2253,7 @@ body.light-theme .member-label {
     z-index: 2;
 }
 
-/* Flip Button */
+
 .flip-button {
     position: absolute;
     bottom: 1rem;
@@ -2279,7 +2274,7 @@ body.light-theme .member-label {
     transform: scale(1.05);
 }
 
-/* Light theme adjustments */
+
 body.light-theme .feature-card-back {
     background: rgba(51, 65, 85, 0.95);
 }
@@ -2289,7 +2284,7 @@ body.light-theme .flip-button {
     border-color: rgba(96, 165, 250, 0.4);
 }
 
-/* Fix Feature Card Display */
+
 .feature-card-inner {
     position: relative;
     width: 100%;
@@ -2326,7 +2321,7 @@ body.light-theme .flip-button {
     display: flex;
 }
 
-/* Position Learn More button to bottom right */
+
 .feature-card-front {
     position: relative;
     padding-bottom: 4rem;
@@ -2346,7 +2341,7 @@ body.light-theme .flip-button {
     margin: 0;
 }
 
-/* Sound Toggle Button */
+
 .sound-toggle {
     background: rgba(139, 92, 246, 0.1);
     border: 1px solid rgba(139, 92, 246, 0.3);
@@ -2380,7 +2375,7 @@ body.light-theme .flip-button {
     color: #c4b5fd;
 }
 
-/* Volume Control Popup */
+
 .volume-control {
     position: absolute;
     top: 60px;
@@ -2455,3 +2450,4 @@ body.light-theme .volume-control {
         margin-right: 0.5rem;
     }
 }
+

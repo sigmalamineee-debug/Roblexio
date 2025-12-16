@@ -50,7 +50,7 @@ class Particle {
         this.speedX = Math.random() * 1 - 0.5;
         this.speedY = Math.random() * 1 - 0.5;
         this.opacity = Math.random() * 0.5 + 0.2;
-        // Color variations: blue, cyan, purple
+        
         const colors = ['59, 130, 246', '6, 182, 212', '139, 92, 246'];
         this.color = colors[Math.floor(Math.random() * colors.length)];
     }
@@ -267,13 +267,11 @@ navTabs.forEach(tab => {
 
 
 
-// Theme Toggle
 const themeToggle = document.getElementById('themeToggle');
 const moonIcon = document.querySelector('.moon-icon');
 const sunIcon = document.querySelector('.sun-icon');
 const savedTheme = localStorage.getItem('theme') || 'dark';
 
-// Apply saved theme
 if (savedTheme === 'light') {
     document.body.classList.add('light-theme');
 }
@@ -285,7 +283,6 @@ themeToggle.addEventListener('click', () => {
     localStorage.setItem('theme', isLight ? 'light' : 'dark');
 });
 
-// Live Stats Counter
 function animateCounter(element, target, duration = 2000) {
     const start = 0;
     const increment = target / (duration / 16);
@@ -301,22 +298,21 @@ function animateCounter(element, target, duration = 2000) {
     }, 16);
 }
 
-// Stats Observer
 const statsObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const statCards = entry.target.querySelectorAll('.stat-card');
             statCards.forEach((card, index) => {
                 const numberEl = card.querySelector('.stat-number');
-                // Only animate if it says "Coming Soon" (for future use)
-                // For now, keep "Coming Soon" as is
-                // Uncomment below to enable counter:
-                // if (numberEl.textContent === 'Coming Soon') {
-                //     const targets = [15420, 48392, 2847];
-                //     setTimeout(() => {
-                //         animateCounter(numberEl, targets[index]);
-                //     }, index * 200);
-                // }
+                
+                
+                
+                
+                
+                
+                
+                
+                
             });
             statsObserver.unobserve(entry.target);
         }
@@ -328,14 +324,13 @@ if (statsSection) {
     statsObserver.observe(statsSection);
 }
 
-// Discord Activity - Live Stats
 async function fetchDiscordStats() {
     try {
-        // Extract server ID from invite link
+        
         const inviteCode = 'hKURBTwV7J';
 
-        // Fetch from Discord widget API
-        const response = await fetch('https://discord.com/api/guilds/1322664892959621120/widget.json');
+        
+        const response = await fetch('https:
 
         if (!response.ok) {
             throw new Error('Widget not enabled');
@@ -344,7 +339,7 @@ async function fetchDiscordStats() {
         const data = await response.json();
         const onlineCount = data.presence_count || 0;
 
-        // Update display
+        
         const onlineEl = document.getElementById('onlineCount');
         if (onlineEl) {
             onlineEl.textContent = onlineCount.toLocaleString();
@@ -352,19 +347,16 @@ async function fetchDiscordStats() {
 
     } catch (error) {
         console.log('Discord stats unavailable:', error.message);
-        // Keep showing "--" if API fails
+        
     }
 }
 
-// Fetch stats on load
 fetchDiscordStats();
 
-// Refresh every 5 minutes
 setInterval(fetchDiscordStats, 5 * 60 * 1000);
 
-// Interactive Background Effects
 
-// Mouse Spotlight Effect
+
 const mouseSpotlight = document.getElementById('mouseSpotlight');
 
 document.addEventListener('mousemove', (e) => {
@@ -374,7 +366,6 @@ document.addEventListener('mousemove', (e) => {
     }
 });
 
-// Constellation Lines Effect
 const constellationCanvas = document.getElementById('constellation-canvas');
 if (constellationCanvas) {
     const ctx = constellationCanvas.getContext('2d');
@@ -384,7 +375,7 @@ if (constellationCanvas) {
     function drawConstellationLines() {
         ctx.clearRect(0, 0, constellationCanvas.width, constellationCanvas.height);
 
-        // Draw lines between nearby particles
+        
         if (particles && particles.length > 0) {
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
@@ -409,16 +400,15 @@ if (constellationCanvas) {
 
     drawConstellationLines();
 
-    // Resize handler
+    
     window.addEventListener('resize', () => {
         constellationCanvas.width = window.innerWidth;
         constellationCanvas.height = window.innerHeight;
     });
 }
 
-// Advanced Scroll Animations
 
-// Scroll Progress Bar
+
 window.addEventListener('scroll', () => {
     const scrollProgress = document.querySelector('.scroll-progress');
     const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -428,7 +418,6 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Scroll Depth Indicator
 const sections = ['home', 'features', 'faq', 'credits', 'download'];
 const depthDots = document.querySelectorAll('.depth-dot');
 
@@ -441,7 +430,6 @@ depthDots.forEach((dot, index) => {
     });
 });
 
-// Update active dot on scroll
 window.addEventListener('scroll', () => {
     let currentSection = 0;
     sections.forEach((sectionId, index) => {
@@ -459,11 +447,10 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// Parallax Effect
 window.addEventListener('scroll', () => {
     const scrolled = window.scrollY;
 
-    // Apply parallax to background elements
+    
     document.querySelectorAll('.parallax-slow').forEach(el => {
         el.style.transform = ranslateY(px);
     });
@@ -477,7 +464,6 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// Staggered Fade In on Scroll
 const observerOptions = {
     threshold: 0.2,
     rootMargin: '0px 0px -100px 0px'
@@ -491,15 +477,13 @@ const fadeObserver = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Apply to FAQ items
 document.querySelectorAll('.faq-item').forEach(item => {
     item.classList.add('stagger-fade');
     fadeObserver.observe(item);
 });
 
-// Enhanced Feature Cards
 
-// Card Flip Functionality
+
 document.querySelectorAll('.flip-button').forEach(button => {
     button.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -508,7 +492,6 @@ document.querySelectorAll('.flip-button').forEach(button => {
     });
 });
 
-// Mouse-Following Glow Effect
 document.querySelectorAll('.feature-card').forEach(card => {
     card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
@@ -518,7 +501,7 @@ document.querySelectorAll('.feature-card').forEach(card => {
         card.style.setProperty('--mouse-x', x + 'px');
         card.style.setProperty('--mouse-y', y + 'px');
 
-        // Position the glow effect
+        
         const glow = card.querySelector('::before') || card;
         if (card.style) {
             card.style.setProperty('--glow-x', (x - 100) + 'px');
@@ -527,7 +510,6 @@ document.querySelectorAll('.feature-card').forEach(card => {
     });
 });
 
-// Update CSS custom properties for glow
 const style = document.createElement('style');
 style.textContent = `
     .feature-card::before {
@@ -537,7 +519,7 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Sound System
+
 class SoundSystem {
     constructor() {
         this.musicEnabled = false;
@@ -545,10 +527,10 @@ class SoundSystem {
         this.musicVolume = 0.3;
         this.sfxVolume = 0.5;
         
-        // Create audio context for sound generation
+        
         this.audioContext = null;
         
-        // Load saved preferences
+        
         const savedMusic = localStorage.getItem('musicEnabled');
         const savedSfx = localStorage.getItem('sfxEnabled');
         if (savedMusic !== null) this.musicEnabled = savedMusic === 'true';
@@ -646,7 +628,7 @@ class SoundSystem {
 
 const soundSystem = new SoundSystem();
 
-// Sound Toggle Button
+
 const soundToggle = document.getElementById('soundToggle');
 const volumeControl = document.getElementById('volumeControl');
 const musicVolumeSlider = document.getElementById('musicVolume');
@@ -660,14 +642,14 @@ if (soundToggle) {
     });
 }
 
-// Close volume control when clicking outside
+
 document.addEventListener('click', (e) => {
     if (volumeControl && !volumeControl.contains(e.target) && e.target !== soundToggle) {
         volumeControl.classList.remove('active');
     }
 });
 
-// Volume sliders
+
 if (musicVolumeSlider) {
     musicVolumeSlider.addEventListener('input', (e) => {
         soundSystem.setMusicVolume(e.target.value);
@@ -681,16 +663,17 @@ if (sfxVolumeSlider) {
     });
 }
 
-// Add hover sounds to interactive elements
+
 document.querySelectorAll('.btn, .nav-tab, .flip-button, .feature-card').forEach(element => {
     element.addEventListener('mouseenter', () => {
         soundSystem.playHoverSound();
     });
 });
 
-// Add click sounds to buttons
+
 document.querySelectorAll('.btn, button, a').forEach(element => {
     element.addEventListener('click', () => {
         soundSystem.playClickSound();
     });
 });
+
